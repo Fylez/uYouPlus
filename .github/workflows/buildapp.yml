@@ -1,6 +1,9 @@
 # Original idea by @ISnackable. Thanks to him for handling the hardest parts!
 # https://github.com/ISnackable/CercubePlus/blob/main/.github/workflows/Build.yml
 
+# Original idea by @ISnackable. Thanks to him for handling the hardest parts!
+# https://github.com/ISnackable/CercubePlus/blob/main/.github/workflows/Build.yml
+
 name: Build and Release uYouPlus
 
 on:
@@ -118,15 +121,15 @@ jobs:
       - name: Prepare YouTube iPA
         id: prepare_youtube
         run: |
-          curl -L "$YOUTUBE_URL" -o main/YouTube.zip
-          file main/YouTube.zip
-          head -c 100 main/YouTube.zip
-          unzip -q main/YouTube.zip
+          wget "$YOUTUBE_URL" --no-verbose -O main/YouTube.ipa
           cd ${{ github.workspace }}/main
+          mv YouTube.ipa YouTube.zip
+          unzip -q YouTube.zip
           youtube_version=$(defaults read "$(pwd)/Payload/YouTube.app/Info" CFBundleVersion)
-          echo " --> YouTube v$youtube_version downloaded!"
-          sed -i '' "17s/#.*#/YOUTUBE_VERSION = ${youtube_version}#g" Makefile
+          echo "==> YouTube v$youtube_version downloaded!"
+          sed -i '' "17s#.*#YOUTUBE_VERSION = ${youtube_version}#g" Makefile
           echo "youtube_version=${youtube_version}" >> $GITHUB_OUTPUT
+
         env:
           THEOS: ${{ github.workspace }}/theos
           YOUTUBE_URL: ${{ inputs.decrypted_youtube_url }}
