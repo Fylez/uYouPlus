@@ -119,7 +119,7 @@ jobs:
         id: prepare_youtube
         run: |
           wget "$YOUTUBE_URL" --no-verbose -O main/YouTube.zip
-          unzip -q YouTube.zip
+          unzip -q main/YouTube.zip
           # mv YouTube.ipa YouTube.zip
           cd ${{ github.workspace }}/main
           youtube_version=$(defaults read "$(pwd)/Payload/YouTube.app/Info" CFBundleVersion)
